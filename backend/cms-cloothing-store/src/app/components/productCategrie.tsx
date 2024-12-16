@@ -14,32 +14,41 @@ type Product = {
 };
 
 const ProductCategories: React.FC = () => {
-  const [mobileProducts, setMobileProducts] = useState<Product[]>([]);
-  const [pcProducts, setPcProducts] = useState<Product[]>([]);
+  const [topWearProducts, setTopWearProducts] = useState<Product[]>([]);
+  const [bottomWearProducts, setBottomWearProducts] = useState<Product[]>([]);
+  const [winterWearProducts, setWinterWearProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     const fetchProductsByType = async () => {
       try {
         const productsCollection = collection(db, "products");
 
-        const mobileQuery = query(productsCollection, where("productType", "==", "mobile"));
-        const pcQuery = query(productsCollection, where("productType", "==", "PC"));
+        const topWearQuery = query(productsCollection, where("productType", "==", "topwear"));
+        const bottomWearQuery = query(productsCollection, where("productType", "==", "bottomwear"));
+        const winterWearQuery = query(productsCollection, where("productType", "==", "winterwear"));
 
-        const mobileSnapshot = await getDocs(mobileQuery);
-        const pcSnapshot = await getDocs(pcQuery);
+        const topWearSnapshot = await getDocs(topWearQuery);
+        const bottomWearSnapshot = await getDocs(bottomWearQuery);
+        const winterWearSnapshot = await getDocs(winterWearQuery);
 
-        const mobileList = mobileSnapshot.docs.map((doc) => ({
+        const topWearList = topWearSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         })) as Product[];
 
-        const pcList = pcSnapshot.docs.map((doc) => ({
+        const bottomWearList = bottomWearSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         })) as Product[];
 
-        setMobileProducts(mobileList);
-        setPcProducts(pcList);
+        const winterWearList = winterWearSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as Product[];
+
+        setTopWearProducts(topWearList);
+        setBottomWearProducts(bottomWearList);
+        setWinterWearProducts(winterWearList);
       } catch (err) {
         console.error("Error fetching products:", err);
       }
@@ -50,9 +59,9 @@ const ProductCategories: React.FC = () => {
 
   return (
     <div className="ml-4 bg-white text-black p-4 rounded">
-      <h1>Mobile Products</h1>
+      <h1>Top Wear Products</h1>
       <div className="grid grid-cols-3 gap-4">
-        {mobileProducts.map((product) => (
+        {topWearProducts.map((product) => (
           <div className="border-2 p-2 rounded w-fit" key={product.id}>
             <img
               src={product.productImg}
@@ -64,9 +73,23 @@ const ProductCategories: React.FC = () => {
         ))}
       </div>
 
-      <h1>PC Products</h1>
+      <h1>Bottom Wear Products</h1>
       <div className="grid grid-cols-3 gap-4">
-        {pcProducts.map((product) => (
+        {bottomWearProducts.map((product) => (
+          <div className="border-2 p-2 rounded w-fit" key={product.id}>
+            <img
+              src={product.productImg}
+              alt={product.productName}
+              className="w-32 h-32 object-cover"
+            />
+            {product.productName}
+          </div>
+        ))}
+      </div>
+
+      <h1>Winter Wear Products</h1>
+      <div className="grid grid-cols-3 gap-4">
+        {winterWearProducts.map((product) => (
           <div className="border-2 p-2 rounded w-fit" key={product.id}>
             <img
               src={product.productImg}
