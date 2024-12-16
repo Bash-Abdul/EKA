@@ -22,6 +22,44 @@ a.active hr{
     display: none;
 }
 
+.perspective {
+    perspective: 1000px;
+  }
+  
+  .card {
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  .card-front,
+  .card-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    backface-visibility: hidden; /* Hide backface during flip */
+    transform-style: preserve-3d;
+  }
+  
+  .card-front {
+    z-index: 2; /* Ensures the front is above the back when not flipped */
+  }
+  
+  .card-back {
+    transform: rotateY(180deg); /* Ensure the back is rotated for initial hidden state */
+  }
+  
+  .rotate-y-180 {
+    transform: rotateY(180deg); /* Apply the flip transformation */
+  }
+  
+  .hidden {
+    visibility: hidden;
+  }
+  
+  
+
 @media (max-width:640px) {
     a.active{
         background-color: black;
